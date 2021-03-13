@@ -27,6 +27,10 @@ public class CustomerRegistrationService {
         return crDao.registerCustomer(data);
     }
 
+    public List<CustomerData> fetchAllCustomers() {
+        return crDao.getAllCustomers();
+    }
+
     public List<ComboData> fetchAllCustomerTypes(FilterRequest req) {
         return crDao.getAllCustomerTypes(req);
     }

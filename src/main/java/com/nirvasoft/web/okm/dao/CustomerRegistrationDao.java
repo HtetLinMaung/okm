@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import com.nirvasoft.web.okm.models.AddressData;
 import com.nirvasoft.web.okm.models.ComboData;
@@ -43,7 +44,7 @@ public class CustomerRegistrationDao extends QueryUtil {
             }
             sql += ")";
 
-            long id = getNextId("Customer", jdbcTemplate);
+            long id = getNextId("Customer", "CustomerId", jdbcTemplate);
 
             int success = jdbcTemplate.update(sql,
                     new Object[] { id, data.getCustomerType(), data.getTitle(), data.getName(), data.getAliasName(),
@@ -92,16 +93,38 @@ public class CustomerRegistrationDao extends QueryUtil {
                     args.add(doc.getFileName());
                 }
 
-                return jdbcTemplate.update(sql, args.toArray());
-            } else {
-                return 0;
+                jdbcTemplate.update(sql, args.toArray());
             }
-
+            return 1;
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
         }
 
+    }
+
+    public List<CustomerData> getAllCustomers() {
+        final String sql = "SELECT CustomerId, Name, NrcNo, HouseNo, BuildingName, Township, Division, Phone, DateOfBirth, PassportNo, Ward, Street, Country, PostalCode, Email FROM Customer";
+
+        return jdbcTemplate.query(sql, (rs, i) -> {
+            CustomerData data = new CustomerData();
+            data.setCustomerId(rs.getString("CustomerId"));
+            data.setName(rs.getString("Name"));
+            data.setNrcNo(rs.getString("NrcNo"));
+            data.setHouseNo(rs.getString("HouseNo"));
+            data.setBuildingName(rs.getString("BuildingName"));
+            data.setTownship(rs.getString("Township"));
+            data.setDivision(rs.getString("Division"));
+            data.setPhone(rs.getString("Phone"));
+            data.setDateOfBirth(rs.getString("DateOfBirth").split(" ")[0]);
+            data.setPassportNo(rs.getString("PassportNo"));
+            data.setWard(rs.getString("Ward"));
+            data.setStreet(rs.getString("Street"));
+            data.setCountry(rs.getString("Country"));
+            data.setPostalCode(rs.getString("PostalCode"));
+            data.setEmail(rs.getString("Email"));
+            return data;
+        });
     }
 
     public List<ComboData> getAllCustomerTypes(FilterRequest req) {

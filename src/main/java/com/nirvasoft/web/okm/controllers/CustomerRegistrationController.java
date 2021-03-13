@@ -45,6 +45,11 @@ public class CustomerRegistrationController {
         return ResponseEntity.status(201).body(res);
     }
 
+    @GetMapping
+    public List<CustomerData> fetchAllCustomers() {
+        return crService.fetchAllCustomers();
+    }
+
     @PostMapping(path = "customer-types")
     public List<ComboData> fetchAllCustomerTypes(@RequestBody FilterRequest req) {
         return crService.fetchAllCustomerTypes(req);
