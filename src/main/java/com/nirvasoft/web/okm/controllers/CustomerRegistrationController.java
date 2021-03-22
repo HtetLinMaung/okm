@@ -50,6 +50,11 @@ public class CustomerRegistrationController {
         return crService.fetchAllCustomers();
     }
 
+    @PostMapping(path = "search")
+    public List<CustomerData> fetchCustomers(@RequestBody FilterRequest req) {
+        return crService.fetchCustomers(req);
+    }
+
     @PostMapping(path = "customer-types")
     public List<ComboData> fetchAllCustomerTypes(@RequestBody FilterRequest req) {
         return crService.fetchAllCustomerTypes(req);

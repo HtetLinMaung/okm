@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 import com.nirvasoft.web.okm.models.AddressData;
+import com.nirvasoft.web.okm.models.AdvanceSearchData;
 import com.nirvasoft.web.okm.models.ComboData;
 import com.nirvasoft.web.okm.models.CountryData;
 import com.nirvasoft.web.okm.models.CustomerData;
@@ -100,11 +100,30 @@ public class CustomerRegistrationDao extends QueryUtil {
             e.printStackTrace();
             return 0;
         }
-
     }
 
-    public List<CustomerData> getAllCustomers() {
-        final String sql = "SELECT CustomerId, Name, NrcNo, HouseNo, BuildingName, Township, Division, Phone, DateOfBirth, PassportNo, Ward, Street, Country, PostalCode, Email FROM Customer";
+    private String getCondition(AdvanceSearchData data) {
+        switch (data.getOperator()) {
+        case "1":
+            return data.getField() + " LIKE '%" + data.getSearch() + "%'";
+        case "2":
+            return data.getField() + " = " + data.getSearch();
+        case "3":
+            return data.getField() + " Like '" + data.getSearch() + "%'";
+        default:
+            return data.getField() + " Like '%" + data.getSearch() + "'";
+        }
+    }
+
+    public List<CustomerData> getCustomers(FilterRequest req) {
+        String sql = "SELECT CustomerId, Name, NrcNo, HouseNo, BuildingName, Township, Division, Phone, DateOfBirth, PassportNo, Ward, Street, Country, PostalCode, Email, Status FROM Customer WHERE ";
+
+        for (int i = 0; i < req.getFilters().size(); i++) {
+            sql += getCondition(req.getFilters().get(i));
+            if (i != req.getFilters().size() - 1) {
+                sql += "AND ";
+            }
+        }
 
         return jdbcTemplate.query(sql, (rs, i) -> {
             CustomerData data = new CustomerData();
@@ -123,6 +142,32 @@ public class CustomerRegistrationDao extends QueryUtil {
             data.setCountry(rs.getString("Country"));
             data.setPostalCode(rs.getString("PostalCode"));
             data.setEmail(rs.getString("Email"));
+            data.setStatus(rs.getString("Status"));
+            return data;
+        });
+    }
+
+    public List<CustomerData> getAllCustomers() {
+        final String sql = "SELECT CustomerId, Name, NrcNo, HouseNo, BuildingName, Township, Division, Phone, DateOfBirth, PassportNo, Ward, Street, Country, PostalCode, Email, Status FROM Customer";
+
+        return jdbcTemplate.query(sql, (rs, i) -> {
+            CustomerData data = new CustomerData();
+            data.setCustomerId(rs.getString("CustomerId"));
+            data.setName(rs.getString("Name"));
+            data.setNrcNo(rs.getString("NrcNo"));
+            data.setHouseNo(rs.getString("HouseNo"));
+            data.setBuildingName(rs.getString("BuildingName"));
+            data.setTownship(rs.getString("Township"));
+            data.setDivision(rs.getString("Division"));
+            data.setPhone(rs.getString("Phone"));
+            data.setDateOfBirth(rs.getString("DateOfBirth").split(" ")[0]);
+            data.setPassportNo(rs.getString("PassportNo"));
+            data.setWard(rs.getString("Ward"));
+            data.setStreet(rs.getString("Street"));
+            data.setCountry(rs.getString("Country"));
+            data.setPostalCode(rs.getString("PostalCode"));
+            data.setEmail(rs.getString("Email"));
+            data.setStatus(rs.getString("Status"));
             return data;
         });
     }
