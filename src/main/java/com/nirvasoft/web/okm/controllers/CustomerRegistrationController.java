@@ -1,5 +1,6 @@
 package com.nirvasoft.web.okm.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.nirvasoft.web.okm.models.AddressData;
@@ -48,6 +49,26 @@ public class CustomerRegistrationController {
     @GetMapping
     public List<CustomerData> fetchAllCustomers() {
         return crService.fetchAllCustomers();
+    }
+
+    @PostMapping(path = "check-nrc")
+    public HashMap<String, String> checkNrc(@RequestBody CustomerData data) {
+        List<CustomerData> list = crService.checkNrc(data.getNrcNo());
+        HashMap<String, String> map = new HashMap<>();
+        String message = list.size() == 0 ? "Validated Successfully"
+                : "IC/NIRC already exists by ID " + list.get(0).getCustomerId();
+        map.put("message", message);
+        return map;
+    }
+
+    @PostMapping(path = "check-passport")
+    public HashMap<String, String> checkPassport(@RequestBody CustomerData data) {
+        List<CustomerData> list = crService.checkPassport(data.getPassportNo());
+        HashMap<String, String> map = new HashMap<>();
+        String message = list.size() == 0 ? "Validated Successfully"
+                : "Passport No already exists by ID " + list.get(0).getCustomerId();
+        map.put("message", message);
+        return map;
     }
 
     @PostMapping(path = "search")

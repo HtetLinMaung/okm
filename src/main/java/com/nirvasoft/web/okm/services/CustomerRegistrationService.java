@@ -1,6 +1,7 @@
 package com.nirvasoft.web.okm.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.nirvasoft.web.okm.dao.CustomerRegistrationDao;
 import com.nirvasoft.web.okm.models.AddressData;
@@ -21,6 +22,14 @@ public class CustomerRegistrationService {
     @Autowired
     public CustomerRegistrationService(@Qualifier("customerRegistrationDao") CustomerRegistrationDao crDao) {
         this.crDao = crDao;
+    }
+
+    public List<CustomerData> checkNrc(String value) {
+        return crDao.checkField("NrcNo", value);
+    }
+
+    public List<CustomerData> checkPassport(String value) {
+        return crDao.checkField("PassportNo", value);
     }
 
     public int registerCustomer(CustomerData data) {

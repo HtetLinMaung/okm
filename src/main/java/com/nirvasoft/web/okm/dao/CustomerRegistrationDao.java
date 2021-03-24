@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import com.nirvasoft.web.okm.models.AddressData;
 import com.nirvasoft.web.okm.models.AdvanceSearchData;
@@ -28,6 +29,17 @@ public class CustomerRegistrationDao extends QueryUtil {
     @Autowired
     public CustomerRegistrationDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<CustomerData> checkField(String key, String value) {
+        final String sql = "SELECT CustomerId FROM Customer WHERE " + key + " = ?";
+        List<CustomerData> list = jdbcTemplate.query(sql, (rs, i) -> {
+            CustomerData data = new CustomerData();
+            System.out.println("fetch");
+            data.setCustomerId(rs.getString("CustomerId"));
+            return data;
+        }, new Object[] { value });
+        return list;
     }
 
     public int registerCustomer(CustomerData data) {
