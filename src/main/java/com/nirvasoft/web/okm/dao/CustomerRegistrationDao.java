@@ -74,7 +74,9 @@ public class CustomerRegistrationDao extends QueryUtil {
 
                 byte[] decodedFile = Base64.getDecoder().decode(data.getPhoto().split(",")[1]);
                 ;
-                String filePath = "cache" + File.separator + "photos" + File.separator + "customer" + File.separator;
+                String filePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator
+                        + "static" + File.separator + "cache" + File.separator + "photos" + File.separator + "customer"
+                        + File.separator;
                 FileOutputStream outputStream = new FileOutputStream(filePath + data.getFileName());
                 outputStream.write(decodedFile);
                 outputStream.close();
@@ -91,7 +93,9 @@ public class CustomerRegistrationDao extends QueryUtil {
                 for (int i = 0; i < data.getDocuments().size(); i++) {
                     DocumentData doc = data.getDocuments().get(i);
                     decodedFile = Base64.getDecoder().decode(doc.getFile().split(",")[1]);
-                    filePath = "cache" + File.separator + "document" + File.separator + "customer" + File.separator;
+                    filePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator
+                            + "static" + File.separator + "cache" + File.separator + "document" + File.separator
+                            + "customer" + File.separator;
                     outputStream = new FileOutputStream(filePath + doc.getFileName());
                     outputStream.write(decodedFile);
                     outputStream.close();
