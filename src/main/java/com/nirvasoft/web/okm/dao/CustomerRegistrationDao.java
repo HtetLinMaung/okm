@@ -69,28 +69,34 @@ public class CustomerRegistrationDao extends QueryUtil {
                         data.getEmail(), ";;", data.getBuildingName(), 1, 19000101 });
 
         if (success > 0) {
-            sql = "INSERT INTO Customer_Doc (CustomerId, DocumentType, File_Path, File_Name, doc) VALUES (?, ?, ?, ?, ?)";
+            sql = "INSERT INTO Customer_Doc (CustomerId, DocumentType, File_Path, File_Name, doc) VALUES ";
 
-            byte[] decodedFile = Base64.getDecoder().decode(data.getPhoto().split(",")[1]);
-            ;
-            String filePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static"
-                    + File.separator + "cache" + File.separator + "photos" + File.separator + "customer"
-                    + File.separator;
-            // FileOutputStream outputStream = new FileOutputStream(filePath +
-            // data.getFileName());
-            // outputStream.write(decodedFile);
-            // outputStream.close();
-
+            byte[] decodedFile;
+            String filePath;
             ArrayList<Object> args = new ArrayList<>();
-            args.add(id);
-            args.add("Photo");
-            args.add(filePath);
-            args.add(data.getFileName());
-            args.add(decodedFile);
+            if (!data.getPhoto().isEmpty()) {
+                sql += "(?, ?, ?, ?, ?)";
+                decodedFile = Base64.getDecoder().decode(data.getPhoto().split(",")[1]);
+                ;
+                filePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static"
+                        + File.separator + "cache" + File.separator + "photos" + File.separator + "customer"
+                        + File.separator;
+                // FileOutputStream outputStream = new FileOutputStream(filePath +
+                // data.getFileName());
+                // outputStream.write(decodedFile);
+                // outputStream.close();
 
-            if (data.getDocuments().size() > 0) {
-                sql += ", ";
+                args.add(id);
+                args.add("Photo");
+                args.add(filePath);
+                args.add(data.getFileName());
+                args.add(decodedFile);
+
+                if (data.getDocuments().size() > 0) {
+                    sql += ", ";
+                }
             }
+
             for (int i = 0; i < data.getDocuments().size(); i++) {
                 DocumentData doc = data.getDocuments().get(i);
                 decodedFile = Base64.getDecoder().decode(doc.getFile().split(",")[1]);
