@@ -9,5 +9,4 @@ public class AngularController {
     public String index() {
         return "index.html";
     }
-
 }

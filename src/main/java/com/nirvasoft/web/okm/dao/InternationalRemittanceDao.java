@@ -24,7 +24,7 @@ public class InternationalRemittanceDao extends QueryUtil {
         if (id == 9990000000L) {
             id = 1;
         }
-        final String keyNames = "serialno, t1, t4, t5, t6, t7, t8, n1, n2, fromcountry, tocountry, savedate, amount, fromremark, fromname, fromnrcno, fromunit, frombuildingname, fromtownship, fromdivision, fromphoneno, fromdob, frompassportno, fromblock, fromstreet, sendercountry, frompostalcode, fromemail, toname, tonrc, tounit, tobuildingname, totownship, todivision, tophoneno, todob, topassportno, toblock, tostreet, receivercountry, topostalcode, toemail, fromcustomerid, tocustomerid, currencycode, tocurrencycode, syskey";
+        final String keyNames = "serialno, t1, t4, t5, t6, t7, t8, n1, n2, n3, fromcountry, tocountry, savedate, amount, fromremark, fromname, fromnrcno, fromunit, frombuildingname, fromtownship, fromdivision, fromphoneno, fromdob, frompassportno, fromblock, fromstreet, sendercountry, frompostalcode, fromemail, toname, tonrc, tounit, tobuildingname, totownship, todivision, tophoneno, todob, topassportno, toblock, tostreet, receivercountry, topostalcode, toemail, fromcustomerid, tocustomerid, currencycode, tocurrencycode, syskey";
         final String[] keys = keyNames.split(",");
         String sql = "INSERT INTO RemitOutCurrency_Self (" + keyNames + ") VALUES (";
 
@@ -37,7 +37,7 @@ public class InternationalRemittanceDao extends QueryUtil {
         }
         sql += ")";
         Object[] args = new Object[] { id, data.getT1(), data.getT4(), data.getT5(), data.getT6(), data.getT7(),
-                data.getT8(), data.getN1(), data.getN2(), data.getFromcountry(), data.getTocountry(),
+                data.getT8(), data.getN1(), data.getN2(), data.getN3(), data.getFromcountry(), data.getTocountry(),
                 data.getSavedate(), data.getAmount(), data.getFromremark(), data.getFromname(), data.getFromnrcno(),
                 data.getFromunit(), data.getFrombuildingname(), data.getFromtownship(), data.getFromdivision(),
                 data.getFromphoneno(), data.getFromdob(), data.getFrompassportno(), data.getFromblock(),
@@ -60,6 +60,10 @@ public class InternationalRemittanceDao extends QueryUtil {
 
     public List<ComboData> getAllCollectionMethods() {
         return getDetails("'Method of Collection'");
+    }
+
+    public List<ComboData> getAllWalletTypes() {
+        return getDetails("'Wallet Type List'");
     }
 
     private List<ComboData> getDetails(String type) {

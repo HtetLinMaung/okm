@@ -55,4 +55,9 @@ public class InternationalRemittance {
     public List<ComboData> getAllCollectionMethods() {
         return irService.fetchAllCollectionMethods();
     }
+
+    @GetMapping(path = "wallet-types")
+    public List<ComboData> getAllWalletTypes() {
+        return irService.fetchAllWalletTypes();
+    }
 }

@@ -34,4 +34,8 @@ public class InternationalRemittanceService {
     public List<ComboData> fetchAllCollectionMethods() {
         return irDao.getAllCollectionMethods();
     }
+
+    public List<ComboData> fetchAllWalletTypes() {
+        return irDao.getAllWalletTypes();
+    }
 }
