@@ -63,4 +63,8 @@ public class CustomerRegistrationService {
     public List<AddressData> fetchAllAddress() {
         return crDao.getAllAddress();
     }
+
+    public List<ComboData> fetchAllSectors() {
+        return crDao.getAllSectors();
+    }
 }

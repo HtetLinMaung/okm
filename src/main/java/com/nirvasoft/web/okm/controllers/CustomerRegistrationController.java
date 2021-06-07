@@ -100,4 +100,9 @@ public class CustomerRegistrationController {
     public List<AddressData> fetchAllAddress() {
         return crService.fetchAllAddress();
     }
+
+    @GetMapping(path = "sectors")
+    public List<ComboData> fetchAllSectors() {
+        return crService.fetchAllSectors();
+    }
 }

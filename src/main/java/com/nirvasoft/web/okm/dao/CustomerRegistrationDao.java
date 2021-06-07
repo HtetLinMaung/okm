@@ -125,19 +125,19 @@ public class CustomerRegistrationDao extends QueryUtil {
 
     private String getCondition(AdvanceSearchData data) {
         switch (data.getOperator()) {
-        case "1":
-            return data.getField() + " LIKE '%" + data.getSearch() + "%'";
-        case "2":
-            return data.getField() + " = " + data.getSearch();
-        case "3":
-            return data.getField() + " Like '" + data.getSearch() + "%'";
-        default:
-            return data.getField() + " Like '%" + data.getSearch() + "'";
+            case "1":
+                return data.getField() + " LIKE '%" + data.getSearch() + "%'";
+            case "2":
+                return data.getField() + " = " + data.getSearch();
+            case "3":
+                return data.getField() + " Like '" + data.getSearch() + "%'";
+            default:
+                return data.getField() + " Like '%" + data.getSearch() + "'";
         }
     }
 
     public List<CustomerData> getCustomers(FilterRequest req) {
-        String sql = "SELECT CustomerId, Name, NrcNo, HouseNo, BuildingName, Township, Division, Phone, DateOfBirth, PassportNo, Ward, Street, Country, PostalCode, Email, Status FROM Customer WHERE ";
+        String sql = "SELECT CustomerId, CONCAT(Title, ' ', Name) AS Name, NrcNo, HouseNo, BuildingName, Township, Division, Phone, DateOfBirth, PassportNo, Ward, Street, Country, PostalCode, Email, Status FROM Customer WHERE ";
 
         for (int i = 0; i < req.getFilters().size(); i++) {
             sql += getCondition(req.getFilters().get(i));
@@ -249,6 +249,18 @@ public class CustomerRegistrationDao extends QueryUtil {
             data.setDescMyan(rs.getString("DespMyan"));
             data.setDescEng(rs.getString("DespEng"));
             data.setLocal(rs.getBoolean("IsLocal"));
+            return data;
+        });
+    }
+
+    public List<ComboData> getAllSectors() {
+
+        final String sql = "SELECT n1,t1 from T00004";
+
+        return jdbcTemplate.query(sql, (rs, i) -> {
+            ComboData data = new ComboData();
+            data.setText(rs.getString("t1"));
+            data.setValue(rs.getString("n1"));
             return data;
         });
     }
